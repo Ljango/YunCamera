@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import jango.camera.R;
-import jango.camera.camera;
 import jango.camera.utils.Constants;
 import jango.camera.utils.SettingToast;
 
