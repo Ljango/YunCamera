@@ -62,7 +62,7 @@ public class camera extends Activity implements OnClickListener {
     private File mPictureFile;
     private Button mBtnSave;
     private TextView mExposureTv;
-    private int mExposureNum = 0;0
+    private int mExposureNum = 0;
     private SharedPreferences mSharedPreferences;
     private Editor mEditor;
 
@@ -321,3 +321,29 @@ public class camera extends Activity implements OnClickListener {
 
     };
 }
+/*
+*
+*
+*
+*
+*
+*
+*
+* asdfsdfafdadsfasdf
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+* */
