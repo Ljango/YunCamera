@@ -31,7 +31,11 @@ public class ResultActivity extends AppCompatActivity {
         initimage();
         System.out.print(filepath);
         Log.d("hehe", filepath);
-        imageLoader.displayImage("file://"+filepath, result_img,initimage());
+        if (filepath.contains("content")){
+            imageLoader.displayImage(filepath, result_img,initimage());
+        }else {
+            imageLoader.displayImage("file://"+filepath, result_img,initimage());
+        }
         super.onStart();
     }
     @Override

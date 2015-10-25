@@ -63,18 +63,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
- /*   @Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("requestCode", String.valueOf(requestCode));
         switch (requestCode){
             case REQUEST_CATEGORY:
+                Log.d("requestCode", String.valueOf(data.getData()));
+                startResult(String.valueOf(data.getData()));
             //    Bitmap cameraBitmap = (Bitmap) data.getExtras().get("data");
             //    new SavePictureTask().execute();
            //     data.getData();
             //    startResult();
                 break;
         }
-    }*/
+    }
 
     public void MyOnlick(View view){
         switch(view.getId()){
