@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">camera</string>
+    <string name="txt_save">拍照</string>
+    <string name="txt_exposure">曝光度</string>
+    <string name="photo_save_path">该图片已保存在：</string>
+    <string name="have_sdcard">无SDCard，请挂在</string>
+    <string name="exposure_set">曝光度设为：</string>
+
+    <string name="title_activity_camera">CameraActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>
