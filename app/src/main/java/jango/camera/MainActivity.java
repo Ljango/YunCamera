@@ -3,6 +3,8 @@ package jango.camera;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.net.Uri;
@@ -21,6 +23,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private File mPictureFile;
     private Button mysavebtn;
     private final int REQUEST_CATEGORY = 11;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         intview();
         super.onStart();
     }
 
-    private void intview(){
+    private void intview() {
         mSurfaceView = (SurfaceView) findViewById(R.id.camera_preview01); // components
         mysavebtn = (Button) findViewById(R.id.my_takepic);
         mSurfaceHolder = mSurfaceView.getHolder();
@@ -66,20 +70,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("requestCode", String.valueOf(requestCode));
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_CATEGORY:
                 Log.d("requestCode", String.valueOf(data.getData()));
                 startResult(String.valueOf(data.getData()));
-            //    Bitmap cameraBitmap = (Bitmap) data.getExtras().get("data");
-            //    new SavePictureTask().execute();
-           //     data.getData();
-            //    startResult();
+                //    Bitmap cameraBitmap = (Bitmap) data.getExtras().get("data");
+                //    new SavePictureTask().execute();
+                //     data.getData();
+                //    startResult();
                 break;
         }
     }
 
-    public void MyOnlick(View view){
-        switch(view.getId()){
+    public void MyOnlick(View view) {
+        switch (view.getId()) {
             case R.id.my_takepic:
                 mCamera.stopPreview();// stop the previe
                 mCamera.takePicture(null, null, pictureCallback); // picture
@@ -101,8 +105,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
-
 
 
     SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
@@ -157,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
         Method downPolymorphic;
         try {
             downPolymorphic = camera.getClass().getMethod(
-                    "setDisplayOrientation", new Class[] { int.class });
+                    "setDisplayOrientation", new Class[]{int.class});
             if (downPolymorphic != null)
-                downPolymorphic.invoke(camera, new Object[] { angle });
+                downPolymorphic.invoke(camera, new Object[]{angle});
         } catch (Exception e1) {
 
         }
@@ -203,15 +205,24 @@ public class MainActivity extends AppCompatActivity {
     Camera.PictureCallback pictureCallback = new Camera.PictureCallback() {
         // @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            new SavePictureTask().execute(data);
+            Bitmap bMap;
+            bMap = BitmapFactory.decodeByteArray(data, 0, data.length);
+            Bitmap bMapRotate;
+            Matrix matrix = new Matrix();
+            matrix.reset();
+            matrix.postRotate(90);
+            bMapRotate = Bitmap.createBitmap(bMap, 0, 0, bMap.getWidth(),
+                    bMap.getHeight(), matrix, true);
+            bMap = bMapRotate;
+            new SavePictureTask().execute(bMap);
             camera.startPreview();
         }
     };
 
     // 保存图片
-    class SavePictureTask extends AsyncTask<byte[], String, String> {
+    class SavePictureTask extends AsyncTask<Bitmap, String, String> {
         @Override
-        protected String doInBackground(byte[]... params) {
+        protected String doInBackground(Bitmap... params) {
             String sdStatus = Environment.getExternalStorageState();
             if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
                 Message message = mHandler.obtainMessage();
@@ -223,15 +234,21 @@ public class MainActivity extends AppCompatActivity {
             }
             mPictureFile = FileUtil.getOutputMediaFile();
             try {
-                FileOutputStream fos = new FileOutputStream(
-                        mPictureFile.getPath()); // Get
+
+            /*    FileOutputStream fos = new FileOutputStream(
+                        mPictureFile.getPath()); // Get*/
                 // stream
-                fos.write(params[0]); // Written to the file
+            //    fos.write(params[0]); // Written to the file
+                File file = new File(mPictureFile.getPath());
+                BufferedOutputStream bos =
+                        new BufferedOutputStream(new FileOutputStream(file));
+                (params[0]).compress(Bitmap.CompressFormat.JPEG, 100, bos);//将图片压缩到流中
+                bos.flush();//输出
+                bos.close();//关闭
                 Message message = mHandler.obtainMessage();
                 message.what = Constants.UPDATA_TOAST_MSG;
                 message.obj = getString(R.string.photo_save_path);
                 mHandler.sendMessage(message);
-                fos.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -261,8 +278,8 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
-    private void startResult(String path){
-        startActivity(new Intent(MainActivity.this,ResultActivity.class)
-                .putExtra("Path",path));
+    private void startResult(String path) {
+        startActivity(new Intent(MainActivity.this, ResultActivity.class)
+                .putExtra("Path", path));
     }
 }

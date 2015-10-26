@@ -25,8 +25,6 @@ public class ResultActivity extends AppCompatActivity {
     }
     @Override
     protected void onStart(){
-        System.out.print(filepath);
-        Log.d("hehe", filepath);
         if (filepath.contains("content")){
             Picasso.with(getApplicationContext()).load(filepath).into(result_img);
         }else {
