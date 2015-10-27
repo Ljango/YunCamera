@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         intview();
+
         super.onStart();
     }
 
@@ -280,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startResult(String path) {
         startActivity(new Intent(MainActivity.this, ResultActivity.class)
-                .putExtra("Path", path));
+                .putExtra("Path", path)
+                );
     }
 }
