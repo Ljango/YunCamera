@@ -54,7 +54,7 @@ public class ResultActivity extends AppCompatActivity {
         }else {
             Picasso.with(getApplicationContext()).load("file://"+filepath).into(result_img);
         }
-        List<String> hehe ;
+    /*    List<String> hehe ;
         hehe = new ArrayList<String>();
         for (int i=0;i<30;i++){
             hehe.add(String.valueOf(i*3));
@@ -63,9 +63,9 @@ public class ResultActivity extends AppCompatActivity {
         LinearLayoutManager haha = new LinearLayoutManager(this);
         haha.setOrientation(LinearLayoutManager.VERTICAL);
         myRecyler.setLayoutManager(haha);
-        myRecyler.setAdapter(resultAdapter);
+        myRecyler.setAdapter(resultAdapter);*/
 
-    //    PostImg(filepath);
+        PostImg(filepath);
        /* new Thread(new Runnable() {
 
             @Override
@@ -88,7 +88,7 @@ public class ResultActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         //  123.57.235.14
-        client.post("http://192.168.2.26/upload", params, new AsyncHttpResponseHandler() {
+        client.post("http://123.57.235.14:800/upload", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 System.out.print(responseBody);
